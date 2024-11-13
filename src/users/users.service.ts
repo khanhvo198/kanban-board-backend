@@ -15,35 +15,51 @@ export class UserService {
     try {
       if (!data.email) {
         throw new HttpException(
-          "Please input email",
+          {
+            errors: {
+              email: "Please input email"
+            }
+          },
           HttpStatus.BAD_REQUEST,
         )
       }
 
       if (!data.password) {
         throw new HttpException(
-          "Please input password",
+          {
+            errors: {
+              password: "Please input password"
+            }
+          },
           HttpStatus.BAD_REQUEST,
         )
       }
 
       if (!data.confirmPassword) {
         throw new HttpException(
-          "Please input confirm password",
+          {
+            errors: {
+              confirmPassword: "Please input confirm password"
+            }
+          },
           HttpStatus.BAD_REQUEST,
         )
       }
 
       if (data.password !== data.confirmPassword) {
         throw new HttpException(
-          "Please input valid password and confirm password",
+          {
+            errors: {
+              confirmPassword: "Please input valid password and confirm password"
+            }
+          },
           HttpStatus.FORBIDDEN,
         )
       }
 
       return await this.prismaService.user.create({
         data: {
-          ...data,
+          email: data.email,
           password: await bcrypt.hash(data.password, 10),
         },
         select: {
