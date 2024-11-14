@@ -24,7 +24,7 @@ model User {
 
 model Member {
   id          String  @id @default(uuid())
-  userId      String  @unique
+  userId      String
   information User    @relation(fields: [userId], references: [id])
   role        Role    @default(USER)
   projectId   String
