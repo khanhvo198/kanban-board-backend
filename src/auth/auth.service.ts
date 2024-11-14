@@ -6,7 +6,7 @@ import { Response } from 'express';
 import { UserService } from 'src/users/users.service';
 
 export interface TokenPayload {
-  userId: number
+  userId: string
 }
 
 @Injectable()
@@ -27,7 +27,7 @@ export class AuthService {
     response.cookie('Authentication', token, {
       secure: true,
       httpOnly: true,
-      expires: new Date(Date.now() + (30 * 24 * 3600000)),
+      expires: new Date(Date.now() + (60 * 60 * 1000)),
     });
 
     return { tokenPayload };
