@@ -1,15 +1,17 @@
-import { HttpException, HttpStatus, Injectable, UnprocessableEntityException } from '@nestjs/common';
+import {
+  HttpException,
+  HttpStatus,
+  Injectable,
+  UnprocessableEntityException,
+} from '@nestjs/common';
 import { Prisma } from '@prisma/client';
-import * as bcrypt from "bcryptjs";
+import * as bcrypt from 'bcryptjs';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateUserRequest } from './dto/create-user.request';
 
 @Injectable()
 export class UserService {
-
-  constructor(
-    private readonly prismaService: PrismaService
-  ) { }
+  constructor(private readonly prismaService: PrismaService) {}
 
   async createUser(data: CreateUserRequest) {
     try {
@@ -17,44 +19,45 @@ export class UserService {
         throw new HttpException(
           {
             errors: {
-              email: "Please input email"
-            }
+              email: 'Please input email',
+            },
           },
           HttpStatus.BAD_REQUEST,
-        )
+        );
       }
 
       if (!data.password) {
         throw new HttpException(
           {
             errors: {
-              password: "Please input password"
-            }
+              password: 'Please input password',
+            },
           },
           HttpStatus.BAD_REQUEST,
-        )
+        );
       }
 
       if (!data.confirmPassword) {
         throw new HttpException(
           {
             errors: {
-              confirmPassword: "Please input confirm password"
-            }
+              confirmPassword: 'Please input confirm password',
+            },
           },
           HttpStatus.BAD_REQUEST,
-        )
+        );
       }
 
       if (data.password !== data.confirmPassword) {
         throw new HttpException(
           {
             errors: {
-              confirmPassword: "Please input valid password and confirm password"
-            }
+              confirmPassword:
+                'Please input valid password and confirm password',
+            },
           },
           HttpStatus.FORBIDDEN,
-        )
+        );
       }
 
       return await this.prismaService.user.create({
@@ -71,7 +74,7 @@ export class UserService {
       if (err.code === 'P2002') {
         throw new UnprocessableEntityException('Email already exists.');
       }
-      throw new HttpException(err, HttpStatus.BAD_REQUEST)
+      throw new HttpException(err, HttpStatus.BAD_REQUEST);
     }
   }
 
