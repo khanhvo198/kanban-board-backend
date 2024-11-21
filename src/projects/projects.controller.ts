@@ -20,6 +20,14 @@ import { ProjectService } from './projects.service';
 export class ProjectController {
   constructor(private readonly projectService: ProjectService) {}
 
+  @Get(':id')
+  async getCurrentProject(
+    @Param('id') id: string,
+  ): Promise<{ project: Project }> {
+    const project = await this.projectService.getCurrentProject(id);
+    return { project };
+  }
+
   @Get()
   async getAllProject(@Request() req: any): Promise<{ projects: Project[] }> {
     return await this.projectService.findAllProjectByUser(req.user.id);

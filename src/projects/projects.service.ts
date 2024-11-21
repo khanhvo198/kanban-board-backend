@@ -34,6 +34,7 @@ export class ProjectService {
         members: {
           create: {
             userId,
+            role: 'ADMIN',
           },
         },
       },
@@ -56,10 +57,34 @@ export class ProjectService {
         id: id,
       },
     });
-    console.log(updatedProject);
 
     return {
       project: updatedProject,
     };
+  }
+
+  async getCurrentProject(projectId: string) {
+    const currentProject = await this.prismaService.project.findUnique({
+      where: {
+        id: projectId,
+      },
+      select: {
+        members: {
+          select: {
+            information: {
+              select: {
+                id: true,
+                name: true,
+              },
+            },
+          },
+        },
+        tasks: true,
+        id: true,
+        name: true,
+      },
+    });
+
+    return currentProject;
   }
 }
