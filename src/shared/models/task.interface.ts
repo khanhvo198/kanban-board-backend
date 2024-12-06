@@ -1,5 +1,14 @@
 import { Prisma } from '@prisma/client';
 
-export type TaskPayLoad = Prisma.TaskGetPayload<{
-  include: { assignees: true; subTasks: true; files: true };
+type TaskWithAssignees = Prisma.TaskGetPayload<{
+  include: { assignees: true };
 }>;
+
+interface Tag {
+  name: string;
+  colorScheme: string;
+}
+
+export interface TaskPayload extends TaskWithAssignees {
+  tags: Tag[];
+}

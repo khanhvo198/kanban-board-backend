@@ -1,5 +1,5 @@
-import { TaskPayLoad } from 'src/shared/models/task.interface';
+import { TaskPayload } from 'src/shared/models/task.interface';
 
 export class CreateTaskRequest {
-  task: TaskPayLoad;
+  task: TaskPayload;
 }

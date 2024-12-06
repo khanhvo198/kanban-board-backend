@@ -11,6 +11,8 @@ export class TasksController {
   @Post()
   async createTask(@Body() body: CreateTaskRequest) {
     const { task } = body;
-    return await this.tasksService.createTask(task);
+    const newTask = await this.tasksService.createTask(task);
+    console.log(newTask);
+    return newTask;
   }
 }
