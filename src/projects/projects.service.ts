@@ -79,12 +79,46 @@ export class ProjectService {
             },
           },
         },
-        tasks: true,
+        tasks: {
+          include: {
+            assignees: true,
+            tags: {
+              include: {
+                tag: true,
+              },
+            },
+            files: {
+              select: {
+                id: true,
+              },
+            },
+            comments: {
+              select: {
+                id: true,
+              },
+            },
+          },
+        },
         id: true,
         name: true,
+        tags: true,
+        columns: true,
       },
     });
 
-    return currentProject;
+    return {
+      ...currentProject,
+      tasks: [
+        ...currentProject.tasks.map((task: any) => ({
+          ...task,
+          tags: task.tags.map((tag: any) => ({
+            id: tag.tag.id,
+            name: tag.tag.name,
+            colorScheme: tag.tag.colorScheme,
+          })),
+        })),
+      ],
+      columns: currentProject.columns.map((column) => column.name),
+    };
   }
 }
