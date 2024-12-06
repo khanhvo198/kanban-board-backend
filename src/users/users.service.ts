@@ -63,10 +63,12 @@ export class UserService {
       return await this.prismaService.user.create({
         data: {
           email: data.email,
+          name: data.name,
           password: await bcrypt.hash(data.password, 10),
         },
         select: {
           email: true,
+          name: true,
           id: true,
         },
       });
