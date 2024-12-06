@@ -52,6 +52,14 @@ model Project {
   tasks     Task[]
   members   Member[]
   tags      Tag[]
+  columns   Column[]
+}
+
+model Column {
+    id          String @id @default(uuid())
+    name        String
+    projectId   String
+    project     Project   @relation(fields: [projectId], references: [id])
 }
 
 model Task {
@@ -66,11 +74,13 @@ model Task {
   files        File[]
   projectId    String
   project      Project   @relation(fields: [projectId], references: [id])
+  comments     Comment[]
 }
 
 model Tag {
   id          String @id @default(uuid())
   name        String
+  colorScheme String?
   projectId   String
   project     Project @relation(fields: [projectId], references: [id])
   tasks       TagsOnTasks[]
@@ -95,11 +105,14 @@ model SubTask {
 model Comment {
   id      String @id @default(uuid())
   content String
+  taskId  String
+  task    Task @relation(fields: [taskId], references: [id])
 }
 
 model File {
-  id     String @id @default(uuid())
-  url    String
-  taskId String
-  task   Task   @relation(fields: [taskId], references: [id])
+  id        String @id @default(uuid())
+  fileName  String
+  url       String
+  taskId    String
+  task      Task   @relation(fields: [taskId], references: [id])
 }
