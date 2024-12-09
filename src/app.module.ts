@@ -5,6 +5,9 @@ import { ProjectModule } from './projects/projects.module';
 import { TasksModule } from './tasks/tasks.module';
 import { UserModule } from './user/user.module';
 import { UsersModule } from './users/users.module';
+import { ColumnsController } from './columns/columns.controller';
+import { ColumnsService } from './columns/columns.service';
+import { ColumnsModule } from './columns/columns.module';
 
 @Module({
   imports: [
@@ -14,8 +17,9 @@ import { UsersModule } from './users/users.module';
     ProjectModule,
     UserModule,
     TasksModule,
+    ColumnsModule,
   ],
-  providers: [],
-  controllers: [],
+  providers: [ColumnsService],
+  controllers: [ColumnsController],
 })
 export class AppModule {}
