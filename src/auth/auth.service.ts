@@ -43,6 +43,7 @@ export class AuthService {
       console.log(user);
       return user;
     } catch (err) {
+      console.log(err);
       throw new UnauthorizedException('Credentials are not valid.');
     }
   }
