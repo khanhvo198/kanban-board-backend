@@ -1,18 +1,19 @@
 import {
   Body,
   Controller,
-  Delete,
   Get,
   Param,
   Post,
   Put,
-  Request,
+  Req,
   UseGuards,
 } from '@nestjs/common';
-import { Project } from '@prisma/client';
+import { Request } from 'express';
 import { JwtAuthGuard } from 'src/auth/guards/jwt.guard';
-import { CreateProjectRequest } from './dto/create-project.request';
-import { UpdateProjectRequest } from './dto/update-project.request';
+import { ReqProjectCreateDto } from './dto/request/reqProjectCreate.dto';
+import { UpdateProjectRequest } from './dto/request/reqProjectUpdate.dto';
+import { ResProjectDto } from './dto/response/resProject.dto';
+import { ResProjectListDto } from './dto/response/resProjectList.dto';
 import { ProjectService } from './projects.service';
 
 @Controller('projects')
@@ -21,20 +22,18 @@ export class ProjectController {
   constructor(private readonly projectService: ProjectService) {}
 
   @Get(':id')
-  async getCurrentProject(
-    @Param('id') id: string,
-  ): Promise<{ project: Project }> {
+  async getCurrentProject(@Param('id') id: string): Promise<ResProjectDto> {
     const project = await this.projectService.getCurrentProject(id);
     return { project };
   }
 
   @Get()
-  async getAllProject(@Request() req: any): Promise<{ projects: Project[] }> {
+  async getAllProject(@Req() req: Request): Promise<ResProjectListDto> {
     return await this.projectService.findAllProjectByUser(req.user.id);
   }
 
   @Post()
-  async createProject(@Body() body: CreateProjectRequest, @Request() req: any) {
+  async createProject(@Body() body: ReqProjectCreateDto, @Req() req: Request) {
     const { project } = body;
     return await this.projectService.createNewProject(project, req.user.id);
   }
@@ -47,7 +46,4 @@ export class ProjectController {
     const { project } = body;
     return await this.projectService.updateProject(project, id);
   }
-
-  @Delete(':id')
-  async deleteProject(@Param('id') id: string) {}
 }

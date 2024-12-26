@@ -1,12 +1,15 @@
 import { Injectable } from '@nestjs/common';
-import { Project } from '@prisma/client';
 import { PrismaService } from 'src/prisma/prisma.service';
+import { ProjectCreateDto } from './dto/projectCreate.dto';
+import { ProjectUpdateDto } from './dto/projectUpdate.dto';
+import { ResProjectListDto } from './dto/response/resProjectList.dto';
+import { ResProjectDto } from './dto/response/resProject.dto';
 
 @Injectable()
 export class ProjectService {
   constructor(private readonly prismaService: PrismaService) {}
 
-  async findAllProjectByUser(userId: string): Promise<{ projects: Project[] }> {
+  async findAllProjectByUser(userId: string): Promise<ResProjectListDto> {
     const projects = await this.prismaService.project.findMany({
       where: {
         members: {
@@ -23,9 +26,9 @@ export class ProjectService {
   }
 
   async createNewProject(
-    project: Project,
+    project: ProjectCreateDto,
     userId: string,
-  ): Promise<{ project: Project }> {
+  ): Promise<ResProjectDto> {
     console.log(project);
 
     const newProject = await this.prismaService.project.create({
@@ -46,9 +49,9 @@ export class ProjectService {
   }
 
   async updateProject(
-    project: Project,
+    project: ProjectUpdateDto,
     id: string,
-  ): Promise<{ project: Project }> {
+  ): Promise<ResProjectDto> {
     const updatedProject = await this.prismaService.project.update({
       data: {
         ...project,

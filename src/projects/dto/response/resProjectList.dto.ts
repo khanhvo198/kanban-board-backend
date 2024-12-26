@@ -1,5 +1,5 @@
-import { ProjectDto } from '../project.dto';
+import { ProjectEntity } from 'src/projects/entity/project.entity';
 
 export class ResProjectListDto {
-  projects: ProjectDto[];
+  projects: ProjectEntity[];
 }
