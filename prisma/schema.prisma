@@ -52,16 +52,17 @@ model Project {
   tasks       Task[]
   members     Member[]
   tags        Tag[]
-  columns     Column[]
+  statuses    Status[]
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
 }
 
-model Column {
+model Status {
     id          String @id @default(uuid())
     name        String
     projectId   String
     project     Project   @relation(fields: [projectId], references: [id])
+    tasks       Task[]
 }
 
 model Task {
@@ -71,7 +72,8 @@ model Task {
   assignees    Assignee[]
   due          DateTime
   tags         TagsOnTasks[]
-  status       String
+  status       Status   @relation(fields: [statusId], references: [id])
+  statusId     String
   subTasks     SubTask[]
   files        File[]
   projectId    String
